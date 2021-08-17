@@ -1,0 +1,32 @@
+Given a string S, the task is to check if the string target is a subsequence of string S or not, using a Stack.
+
+input: S = ”KOTTAYAM”, target = ”KOTA”
+Output: Yes
+Explanation: “KOTA” is a subsequence of “KOTTAYAM”.
+
+Input: S = ”TITFORTAT”, target =”FORFOR”
+Output: No
+
+##CODE##
+
+#include <iostream>
+using namespace std;
+
+int main() {
+
+string s ="GEEKSFORGEEKS";
+
+string p = "FOR";
+int c=0;
+int i =s.length()-1;
+int j = p.length()-1;
+
+    while(i >=0 && j>=0){
+        if(p[j] == s[i] ){
+            j--;
+            c++;
+        }
+        i--;
+    }
+	cout <<  (c==p.length());
+}
