@@ -1,0 +1,103 @@
+Given two sequences, print the longest subsequence present in both of them.
+
+Examples:
+LCS for input Sequences “ABCDGH” and “AEDFHR” is “ADH” of length 3.
+LCS for input Sequences “AGGTAB” and “GXTXAYB” is “GTAB” of length 4.
+
+##CODE
+
+#include <vector>
+using namespace std;
+
+vector<char> backtrack(vector<vector<int>>&dp,string str1, string str2,int l){ 
+	vector<char>v(l);
+	
+	int i = str1.length();
+	int j = str2.length();
+
+	while(i>0 && j>0){
+		if(str1[i-1] == str2[j-1]){
+			v[--l] =str2[j-1];
+			i--;
+			j--;
+			
+			
+		}
+		else if(dp[i-1][j] > dp[i][j-1]){
+			i--;
+		}
+		else{
+			j--;
+		}
+	}
+	return v;
+}
+
+vector<char> longestCommonSubsequence(string str1, string str2) {
+  // Write your code here.
+	int m =str1.length();
+	int n = str2.length();
+//	int dp[m+1][n+1];
+	vector<vector<int>>dp(m+1,vector<int>(n+1));
+	for(int i=0;i<=m;i++){
+		for(int j=0;j<=n;j++){
+			if(i==0 || j==0){
+				dp[i][j] = 0;
+			}
+			else if(str1[i-1]==str2[j-1]){
+				dp[i][j] = dp[i-1][j-1]+1;
+			}
+			else{
+				dp[i][j] = max(dp[i-1][j],dp[i][j-1]);
+			}
+		}
+	}
+	cout << dp[m][n];
+  return backtrack(dp,str1,str2,dp[m][n]);
+}
+
+
+
+METHOD 2:
+
+#include <vector>
+using namespace std;
+
+vector<char> longestCommonSubsequence(string str1, string str2) {
+  // Write your code here.
+if(str1.length() ==0 || str2.length()==0){return {};}
+	vector<char>v;
+	int n1=str1.length();
+	int n2=str2.length();
+	vector<vector<string>>dp(n1+1,vector<string>(n2+1));
+	
+	for(int i=0;i<=n1;i++){
+		
+		for(int j=0;j<=n2;j++){
+			if(i==0 || j==0){
+				dp[i][j]="";
+			}
+			else if(str1[i-1] == str2[j-1]){
+				dp[i][j] =dp[i-1][j-1] + str1[i-1];
+				//v.push_back(dp[i][j]);
+			}
+			else{
+				if(dp[i-1][j].length() >= dp[i][j-1].length()){
+					dp[i][j]=dp[i-1][j];
+					//v.push_back(dp[i][j]);
+				}
+				else{
+					dp[i][j] = dp[i][j-1];
+					//v.push_back(dp[i][j]);
+				}
+			}
+		}
+	}
+	string s = dp[n1][n2];
+	cout << s;
+	//v.push_back(s);
+	for(int i=0;i<s.length();i++){
+		v.push_back(char(s[i]));
+	}
+	return v;
+}
